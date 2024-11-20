@@ -1,9 +1,12 @@
 from django.contrib import admin
-from .models import Instrument, Musician
+from django.contrib.auth.admin import UserAdmin
+from .models import CustomUser, Instrument
 
-class MusicianAdmin(admin.ModelAdmin):
-    list_display = ('user',)  # Display the username in the list view
-    filter_horizontal = ('instrument',)  # Add a horizontal filter for the 'instrument' field
+class CustomUserAdmin(UserAdmin):
+    model = CustomUser
+    fieldsets = UserAdmin.fieldsets + (
+        ('Custom Fields', {'fields': ('instruments',)}),
+    )
 
+admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Instrument)
-admin.site.register(Musician, MusicianAdmin)
